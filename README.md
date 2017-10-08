@@ -6,4 +6,6 @@
 
 ## How to setup your WordPress blog
 
+## Create a Lambda function and API Gateway for your Skill
+
 ## How to create an Alexa Flash Skill
