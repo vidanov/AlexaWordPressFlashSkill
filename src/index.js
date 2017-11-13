@@ -1,10 +1,24 @@
+/*
+Author: Alexey Vidanov vidanov.com
+Version: 1.1
+
+You need REST API in WordPress (Jetpack Plugin)
+You can use the excerpt field for TTS in Alexa
+or put MP3 in the content part to play
+*/
+
 'use strict';
 exports.handler  = (event, context, callback) => {
-	var https = require('https');
+    var protocol = 'http';
+    if (process.env.port == 443) {
+        protocol='https';
+    }
+	var https = require(protocol);
 	var options = {
-		host: process.env.site, 
-		port: process.env.port,
-		path: process.env.path,
+		host: process.env.site,  //sample.com
+		port: process.env.port, // 443 and 80 both are possible, if you use other ports 
+								// please change the code above for the correct protocol  if (process.env.port == 443) {
+		path: process.env.path, // wp-json/wp/v2/posts?per_page=1&category=
 		method: 'GET'
 	};
 	try {
@@ -40,7 +54,8 @@ exports.handler  = (event, context, callback) => {
 			
 				const response = {
 					statusCode: 200,
-					headers: {'Access-Control-Allow-Origin': '*'},
+					headers: {'Access-Control-Allow-Origin': '*', 'Content-Type':'application/json', 'charset':'utf-8'},
+				    isBase64Encoded:true,
 					body: JSON.stringify(sendjson)
 				}
 				callback(null, response);
